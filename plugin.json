@@ -1,0 +1,9 @@
+{
+  "name": "IITC plugin: PLink",
+  "id": "iitc_plugin_PLink",
+  "category": "Portal Info",
+  "description": "Enhance Portal Links",
+  "author": "McBen",
+  "entry": "src/Main.ts",
+  "minimize": false
+}
