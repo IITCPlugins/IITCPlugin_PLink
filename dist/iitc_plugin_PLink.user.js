@@ -2,7 +2,7 @@
 // @name            IITC plugin: PLink
 // @id              iitc_plugin_PLink
 // @category        Portal Info
-// @version         1.0
+// @version         1.1
 // @namespace       https://github.com/jonatkins/ingress-intel-total-conversion
 // @description     Enhance Portal Links
 // @include         https://intel.ingress.com/*
@@ -679,10 +679,12 @@ class PLink {
             if (selectedPortal) {
                 const portal = window.portals[selectedPortal];
                 if (portal) {
-                    linkDetails.append($("<aside>").append($("<div>").append($("<a>", {
+                    const link = $("<a>", {
                         text: "Scanner",
                         href: WebLink.scanner(portal)
-                    }))));
+                    });
+                    link.on("taphold", () => this.copyScannerLink());
+                    linkDetails.append($("<aside>").append($("<div>").append(link)));
                 }
             }
         }
@@ -690,6 +692,15 @@ class PLink {
             linkDetails.children().hide();
             linkDetails.append($("<a>", { text: "Share", click: () => this.showLinks(), target: "blank" }));
         }
+    }
+    copyScannerLink() {
+        if (!selectedPortal)
+            return;
+        const portal = window.portals[selectedPortal];
+        if (!portal)
+            return;
+        androidCopy(WebLink.scanner(portal));
+        this.toast("copied to clipboard");
     }
     showLinks() {
         if (!selectedPortal) {
