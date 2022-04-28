@@ -20,13 +20,17 @@ class PLink implements Plugin.Class {
             if (selectedPortal) {
                 const portal = window.portals[selectedPortal];
                 if (portal) {
+
+                    const link = $("<a>", {
+                        text: "Scanner",
+                        href: WebLink.scanner(portal)
+                    });
+
+                    link.on("taphold", () => this.copyScannerLink());
+
                     linkDetails.append(
                         $("<aside>").append(
-                            $("<div>").append(
-                                $("<a>", {
-                                    text: "Scanner",
-                                    href: WebLink.scanner(portal)
-                                }))));
+                            $("<div>").append(link)));
                 }
             }
         } else {
@@ -35,6 +39,15 @@ class PLink implements Plugin.Class {
             linkDetails.append(
                 $("<a>", { text: "Share", click: () => this.showLinks(), target: "blank" }))
         }
+    }
+
+
+    copyScannerLink(): void {
+        if (!selectedPortal) return;
+        const portal = window.portals[selectedPortal];
+        if (!portal) return;
+        androidCopy(WebLink.scanner(portal));
+        this.toast("copied to clipboard");
     }
 
 
